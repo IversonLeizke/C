@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct item {
+    int ISBN;
+    char[15] name;
+    int value;
+    char[15] author;
+    char[10] publishingHouse;
+    int puclishingYear;
+};
+
+typedef struct item Item;
+
+struct node {
+    Item item;
+    struct node *left;
+    struct node *right;
+};
+
+typedef struct node Node;
+
+Node *treeInitialize() {
+    return NULL;
+}
+
+Item itemCreat(int ISBN, char[15] name, int value, char[15] author, char[10] publishingHouse, int puclishingYear) {
+    Item item;
+    item.ISBN = ISBN;
+    item.name = name;
+    item.value = value;
+    item.author = author;
+    item.publishingHouse = publishingHouse;
+    item.puclishingYear = puclishingYear;
+    return item;
+}
+
+Node *treeInsert(Node *root, Item x) {
+    if (root == NULL) {
+        Node *aux = (Node*) malloc(sizeof(Node));
+        aux->item = x;
+        aux->left = NULL;
+        aux->right = NULL;
+        return aux;
+    }
+    else {
+        if (x.cod > root->item.cod) {
+            root->right = treeInsert(root->right, x);
+        }
+        else {
+            root->left = treeInsert(root->left, x);
+        }
+    }
+}
+
+void treePrint(Node *root) {
+    if (root != NULL) {
+        printf("%d ", root->item.cod);
+        treePrint(root->left);
+        treePrint(root->right);
+    }
+}
+
+void treeFree(Node *root) {
+    if (root != NULL) {
+        treeFree(root->left);
+        treeFree(root->right);
+        free(root);
+    }
+}
+
+void main() {
+    Node *root = treeInitialize();
+    root = treeInsert(root, itemCreat(0131103628, "C Programming", 150, "Dennis Ritchie", "Prentice", 1988));
+    treePrint(root);
+    treeFree(root);
+}
